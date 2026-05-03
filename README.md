@@ -6,7 +6,7 @@
 1. [Getting Started](#getting-started)
 2. [Creating a Component](#creating-a-component)
 3. [The Definition Object (`def`)](#the-definition-object-def)
-    * [State & Content: `props`, `content`, `css`, `render`](#state--content)
+    * [State & Content: `props`, `owns`, `content`, `css`, `render`](#state--content)
     * [Interactivity: `events`](#events)
     * [Lifecycle Hooks: `create`, `insert`, `change`, `remove`, `adopt`](#lifecycle-hooks)
 4. [Component Instance API (The `this` context)](#component-instance-api)
@@ -53,7 +53,8 @@ The Definition Object (`def`)
 
 ### State & Content
 
-*   **`props`**: Object defining observed attributes. Supports `String`, `Number`, `Boolean`, and `Date` via default value inference.
+*   **`props`**: Object defining observed/bound attributes. Supports `String`, `Number`, `Boolean`, and `Date`.
+*   **`owns`**: Object of un-bound element instance properties, like title, tabIndex, or value.
 *   **`css`**: String or Function returning CSS for the Shadow DOM.
 *   **`content`**: Initial HTML structure injected into the component.
 *   **`render`**: Function to update the DOM. Automatically receives the element as the first argument.
@@ -73,6 +74,22 @@ JavaScript
         disabled: false, // Coerces to Boolean
         label: "Click"   // Coerces to String
     }
+
+
+#### `owns`
+
+An object defining the live element's own properties, like title or tabIndex. These are applied early, at instantiation time before props are applied or render is first called.
+*   **Use Case:** Configuring standard HTML properties, storing state, setting defaults.
+    
+
+JavaScript
+
+    owns: {
+        title: "some tooltip",
+        reset: function(){this.props = this.def.props;},
+        uid: "_"+Math.random().toString(36).slice(-8),
+    }
+
 
 #### `css`
 
