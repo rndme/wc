@@ -173,8 +173,6 @@ Within the component logic, `this` refers to the element instance.
 |-----------------------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | this.render()               | undefined          | Triggers the render function defined in your def object.                                                                                        |
 | this.$(css)                 | Array<Node>        | Runs querySelectorAll inside the Shadow DOM, but returns a true Array instead of a NodeList, allowing immediate use of .map(), .filter(), etc.  |
-| this.html([String])         | String             | Getter/Setter for this.root.innerHTML. Pass a string to set, omit to get. Returns this for chaining when setting.                               |
-| this.css([String])          | CSSRuleList        | Getter/Setter for the Shadow DOM styles. Gets rules if omitted, sets `<style>` text content if provided. Returns `this` for chaining.           |
 | this.raise(name, [details]) | this               | A shortcut for dispatching Custom Events. Emits an event on the component. Returns this for chaining.                                           |
 
 
@@ -184,6 +182,7 @@ Within the component logic, `this` refers to the element instance.
 | Property            | Type             | Description                                                                                     | Use Case                                                                              |
 |---------------------|------------------|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | this.root           | HTMLElement      | A <root> element inside the Shadow DOM that wraps your component's HTML.                        | Target for innerHTML rendering.                                                       |
+| this.css(=[String]) | CSSRuleList/this | Getter/Setter for the components CSS. Setting appends new CSS string, get returns rules         | Shadow DOM styles access, adding new CSS rules to component                           |
 | this.styleTag       | HTMLStyleElement | The <style> element inside the Shadow DOM.                                                      | Dynamically modifying component stylesheets.                                          |
 | this.def            | Object           | A reference to the original definition object passed to wc().                                   | Accessing static data or shared logic.                                                |
 | this.props          | Object           | returns a _copy_ of the formal props, or sets all passed object properties on instance.         | Accessing state/config.                                                               |
