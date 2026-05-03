@@ -150,6 +150,10 @@ wc._ = {
 	$: function(css) {
 		return [].slice.call(this.shadowRoot.querySelectorAll(css));
 	},
+	on: function(eventName, eventHandler, blnOnce){
+		this.addEventListener(eventName, eventHandler, blnOnce ? { once: true } : {});
+		return this;
+	},
 };
 
 wc.defs={};
