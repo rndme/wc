@@ -6,7 +6,7 @@
 1. [Getting Started](#getting-started)
 2. [Creating a Component](#creating-a-component)
 3. [The Definition Object (`def`)](#the-definition-object-def)
-    * [State & Content: `props`, `owns`, `content`, `css`, `render`](#state--content)
+    * [State & Content: `props`, `owns`, `state`, `content`, `css`, `render`](#state--content)
     * [Interactivity: `events`](#events)
     * [Lifecycle Hooks: `create`, `insert`, `change`, `remove`, `adopt`](#lifecycle-hooks)
 4. [Component Instance API (The `this` context)](#component-instance-api)
@@ -55,6 +55,7 @@ The Definition Object (`def`)
 
 *   **`props`**: Object defining observed/bound attributes. Supports `String`, `Number`, `Boolean`, and `Date`.
 *   **`owns`**: Object of un-bound element instance properties, like title, tabIndex, or value.
+*   **`state`**: Object of un-bound data, cloned on instatiation, used to store transient and non-standard properties.
 *   **`css`**: String or Function returning CSS for the Shadow DOM.
 *   **`content`**: Initial HTML structure injected into the component.
 *   **`render`**: Function to update the DOM. Automatically receives the element as the first argument.
@@ -78,16 +79,31 @@ JavaScript
 
 #### `owns`
 
-An object defining the live element's own properties, like title or tabIndex. These are applied early, at instantiation time before props are applied or render is first called.
-*   **Use Case:** Configuring standard HTML properties, storing state, setting defaults.
-    
+An object defining the live element's own properties, like title or tabIndex. These are applied early, at instantiation time before `props` are applied or `render` is first called.
 
+*   **Use Case:** Configuring standard HTML properties, storing state, defining instance methods, setting defaults.
+    
 JavaScript
 
     owns: {
         title: "some tooltip",
         reset: function(){this.props = this.def.props;},
         uid: "_"+Math.random().toString(36).slice(-8),
+    }
+
+#### `state`
+
+An object holding state or data needed by the component, but not bound to attributes. It's cloned from the `def` early, at instantiation time after `owns` and before `props` are applied or `render` is first called.
+
+*   **Use Case:** Internal state, holding deeply nested data, external access to other components.
+    
+
+JavaScript
+
+    state: {
+        born: new Date(),
+        user: window.user.name,
+        hasBeenUsed: false,
     }
 
 
