@@ -40,6 +40,9 @@ function wc(name, def) {
 					var o = {};
 					PROPS.forEach(p => o[p] = this[p]);
 					return o;
+				},
+				set: function(v){
+					Object.keys(v||{}).forEach(p => this[p] = v[p]);
 				}
 			});
 			
@@ -151,4 +154,3 @@ wc._ = {
 
 wc.defs={};
 wc.elms={};
-
