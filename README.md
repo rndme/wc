@@ -1,0 +1,2 @@
+# wc
+simple web components
