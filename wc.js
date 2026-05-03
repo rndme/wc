@@ -37,6 +37,14 @@ function wc(name, def) {
 				value: def
 			});		
 			
+			hide("css", {
+				get: function(){return this.styleTag.sheet.cssRules;},
+				set: function(css) {
+					this.styleTag.textContent += css;
+					return this;
+				},
+			});
+			
 			hide("props", { // component definition access
 				get: function(){
 					var o = {};
@@ -141,16 +149,6 @@ function wc(name, def) {
 wc._ = {
 	$: function(css) {
 		return [].slice.call(this.shadowRoot.querySelectorAll(css));
-	},
-	css: function(css) {
-		if (!css) return this.styleTag.sheet.cssRules;
-		this.styleTag.textContent = css;
-		return this;
-	},
-	html: function(html) {
-		if (!html) return this.root.innerHTML;
-		this.root.innerHTML = html;
-		return this;
 	},
 };
 
