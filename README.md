@@ -139,16 +139,26 @@ Within the component logic, `this` refers to the element instance.
 
 ### Methods
 
-*   `this.$(selector)`: Returns an **Array** of elements from the Shadow DOM.
-*   `this.html(string)`: Getter/Setter for the root innerHTML.
-*   `this.css(string)`: Getter/Setter for the shadow stylesheet.
-*   `this.raise(name, detail)`: Shortcut for `dispatchEvent` with a CustomEvent.
+| Method                      | Returns            | Description                                                                                                                                     |
+|-----------------------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| this.render()               | undefined          | Triggers the render function defined in your def object.                                                                                        |
+| this.$(css)                 | Array<Node>        | Runs querySelectorAll inside the Shadow DOM, but returns a true Array instead of a NodeList, allowing immediate use of .map(), .filter(), etc.  |
+| this.html([String])         | String | this      | Getter/Setter for this.root.innerHTML. Pass a string to set, omit to get. Returns this for chaining when setting.                               |
+| this.css([String])          | CSSRuleList | this | Getter/Setter for the Shadow DOM styles. Gets rules if omitted, sets <style> text content if provided. Returns this for chaining when setting.  |
+| this.raise(name, [details]) | this               | A shortcut for dispatching Custom Events. Emits an event on the component. Returns this for chaining.                                           |
+
+
 
 ### Properties
 
-*   `this.elms`: Proxy object for elements with an `id` (e.g., `this.elms.myBtn`).
-*   `this.root`: Reference to the internal Shadow DOM wrapper.
-*   `this.initialContent`: The original innerHTML of the tag before initialization.
+| Property            | Type             | Description                                                                                     | Use Case                                                                              |
+|---------------------|------------------|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| this.root           | HTMLElement      | A <root> element inside the Shadow DOM that wraps your component's HTML.                        | Target for innerHTML rendering.                                                       |
+| this.styleTag       | HTMLStyleElement | The <style> element inside the Shadow DOM.                                                      | Dynamically modifying component stylesheets.                                          |
+| this.def            | Object           | A reference to the original definition object passed to wc().                                   | Accessing static data or shared logic.                                                |
+| this.elms           | Object           | A proxy object containing live references to all Shadow DOM children that have an id attribute. | Quick DOM querying (e.g., this.elms.myButton instead of querySelector('#myButton')).  |
+| this.initialContent | String           | The raw Light DOM innerHTML of the tag before the Shadow DOM attached.                          | Wrapping or transforming pre-existing HTML inside the tag.                            |
+
 
 
 ### Events
@@ -194,29 +204,7 @@ Comprehensive Example
         }
     });
 
-Hook
 
-Standard Equivalent
-
-Use Case
-
-`create`
-
-constructor
-
-Internal setup before DOM attachment.
-
-`insert`
-
-connectedCallback
-
-Fired when added to page; fetch data here.
-
-`change`
-
-attributeChangedCallback
-
-React to property mutations.
 
 `remove`
 
