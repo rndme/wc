@@ -19,6 +19,8 @@ function wc(name, def) {
 				mode: "open"
 			});
 			
+			Object.keys(def.owns || {}).forEach( k=>this[k]=def.owns[k] );			
+			
 			var hide = Object.defineProperty.bind(Object, this); // silent own property publisher
 			
 			hide("styleTag", { // this.styleTag access
@@ -31,6 +33,14 @@ function wc(name, def) {
 			
 			hide("def", { // component definition access
 				value: def
+			});		
+			
+			hide("props", { // component definition access
+				get: function(){
+					var o = {};
+					PROPS.forEach(p => o[p] = this[p]);
+					return o;
+				}
 			});
 			
 			hide("elms", { // this.elms (id-having children by id) access
@@ -141,5 +151,4 @@ wc._ = {
 
 wc.defs={};
 wc.elms={};
-
 
