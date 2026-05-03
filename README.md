@@ -1,9 +1,6 @@
-🧩 wc.js
-========
-
 **Lightweight Web Component Builder**
 
-`wc.js` is a tiny, zero-dependency utility that removes the boilerplate from creating vanilla Web Components. It handles Shadow DOM, property-to-attribute synchronization, type coercion, and lifecycle management.
+`wc` is a tiny, zero-dependency utility that removes the boilerplate from creating vanilla Web Components. It handles Shadow DOM, property-to-attribute synchronization, type coercion, and lifecycle management.
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
@@ -204,12 +201,5 @@ Comprehensive Example
         }
     });
 
-
-
-`remove`
-
-disconnectedCallback
-
-Cleanup listeners or timers.
 
 
