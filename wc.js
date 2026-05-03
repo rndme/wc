@@ -20,6 +20,8 @@ function wc(name, def) {
 			});
 			
 			Object.keys(def.owns || {}).forEach( k=>this[k]=def.owns[k] );			
+
+			if(def.state) this.state = structuredClone(def.state);
 			
 			var hide = Object.defineProperty.bind(Object, this); // silent own property publisher
 			
