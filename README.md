@@ -172,7 +172,7 @@ Within the component logic, `this` refers to the element instance.
 | Method                      | Returns            | Description                                                                                                                                     |
 |-----------------------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | this.render()               | undefined          | Triggers the render function defined in your def object.                                                                                        |
-| this.$(css)                 | Array<Node>        | Runs querySelectorAll inside the Shadow DOM, but returns a true Array instead of a NodeList, allowing immediate use of .map(), .filter(), etc.  |
+| this.$(cssSelector)         | Array<Node>        | Runs querySelectorAll inside the Shadow DOM, but returns a true Array instead of a NodeList, allowing immediate use of .map(), .filter(), etc.  |
 | this.raise(name, [details]) | this               | A shortcut for dispatching Custom Events. Emits an event on the component. Returns this for chaining.                                           |
 
 
