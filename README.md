@@ -61,7 +61,7 @@ The Definition Object (`def`)
 *   **`render`**: Function to update the DOM. Automatically receives the element as the first argument.
 
   
-#### `props`
+#### `def.props`
 
 An object defining the observed attributes and their default values. `wc.js` uses the default value's constructor to automatically coerce types (`String`, `Number`, `Boolean`, `Date`) when attributes are read.
 
@@ -77,7 +77,7 @@ JavaScript
     }
 
 
-#### `owns`
+#### `def.owns`
 
 An object defining the live element's own properties, like title or tabIndex. These are applied early, at instantiation time before `props` are applied or `render` is first called.
 
@@ -91,7 +91,7 @@ JavaScript
         uid: "_"+Math.random().toString(36).slice(-8),
     }
 
-#### `state`
+#### `def.state`
 
 An object holding state or data needed by the component, but not bound to attributes. It's cloned from the `def` early, at instantiation time after `owns` and before `props` are applied or `render` is first called.
 
@@ -107,7 +107,7 @@ JavaScript
     }
 
 
-#### `css`
+#### `def.css`
 
 A string (or a function returning a string) containing the CSS for the Shadow DOM.
 
@@ -120,7 +120,7 @@ JavaScript
     // OR
     css: function(elm) { return `root { color: ${elm.color}; }`; }
 
-#### `content`
+#### `def.content`
 
 A string (or a function returning a string) containing the initial HTML injected into the component before the first render.
 
@@ -131,7 +131,7 @@ JavaScript
 
     content: `<span id="label">Loading...</span>`
 
-#### `render`
+#### `def.render`
 
 A function called to update the DOM. You can call this manually via `this.render()`, or bind it to fire on state changes.
 
@@ -144,7 +144,7 @@ JavaScript
         this.root.innerHTML = `<div>Count is: ${this.count}</div>`;
     }
 
-### `events`
+### `def.events`
 
 An object mapping standard DOM event names to listener functions. These are automatically bound to the component instance via `addEventListener`.
 
