@@ -13,6 +13,14 @@ function wc(name, def) {
 	});
 	
 	class wcMaker extends HTMLElement {
+	
+		raise(name, details) { // custom event maker shortcut own method
+			this.dispatchEvent(new CustomEvent(name, {
+				detail: details || {}
+			}));
+			return this;
+		}
+		
 		constructor() {
 			super();
 			const shadow = this.attachShadow({
@@ -95,8 +103,11 @@ function wc(name, def) {
 				type: "create",
 				detail: def
 			});
+			
+			// raise custom create event
+			this.raise("create", def);
 
-		}
+		} // end contructor()
 		
 		connectedCallback(e) {
 			// memorize initial html in a hidden static own prop:
@@ -121,7 +132,11 @@ function wc(name, def) {
 				detail: def,
 			});
 			
-		}
+			// raise custom insert event
+			this.raise("insert", def);			
+			
+		} // end connectedCallback()
+		
 		
 		attributeChangedCallback(name, was, is) {
 			if (this[name] != is) this[name] = is; // update prop from attrib if needed
@@ -138,7 +153,7 @@ function wc(name, def) {
 				was,
 				is
 			});
-		}
+		} // end attributeChangedCallback()
 		
 		disconnectedCallback(e) { // removed from dom, unmemorize and run user cleanup if provided
 			// if def has a remove callback then call it back
@@ -147,8 +162,12 @@ function wc(name, def) {
 				type: "remove",
 				detail: def
 			});
+			
+			// raise custom remove event
+			this.raise("remove", def);		
+			
 			if (this.id) delete wc.elms[this.id];
-		}
+		} // end disconnectedCallback()
 		
 		adoptedCallback(e) {
 			// if def has an adopt callback then call it back
@@ -156,19 +175,18 @@ function wc(name, def) {
 				target: this,
 				type: "adopt",
 				detail: def
-			});			
-		}
+			});
+			
+			// raise custom adopt event
+			this.raise("adopt", def);		
+			
+		} // end adoptedCallback()
 		
 		static get observedAttributes() { // require by CustomElements
 			return PROPS;
-		}
+		} // end observedAttributes()
 		
-		raise(name, details) { // custom event maker shortcut own method
-			this.dispatchEvent(new CustomEvent(name, {
-				detail: details || {}
-			}));
-			return this;
-		}
+
 	} //end class wcMaker
 	customElements.define( wc.prefix + "-" + name, wcMaker);
 }//end wc component maker()
