@@ -42,11 +42,11 @@ The Definition Object (`def`)
 
 ### Lifecycle Hooks
 
-`wc.js` maps standard CustomElement lifecycle methods to simple callbacks on the `def` object.
+`wc` maps standard CustomElement lifecycle methods to simple callbacks on the `def` object. All hooks are passed the same context details: `target`: the element, `type`: the event name, `detail`: the def or change details. In addition, DOM events are raised on the element as the hooks are invoked: `event.type` matches the lifecycle event name (ex: "create"), and the event `.detail` contains the `def` object.
 
-*   **`create(event)`**: Called inside the constructor before the element is attached to the DOM. Useful for deep initialization.
+*   **`create()`**: Called inside the constructor before the element is attached to the DOM. Useful for deep initialization.
 *   **`insert()`**: Maps to `connectedCallback`. Called when the element is added to the page. Useful for fetching initial data.
-*   **`change(name, was, is)`**: Maps to `attributeChangedCallback`. Called when a property defined in `props` is mutated.
+*   **`change(detail: {name, was, is})`**: Maps to `attributeChangedCallback`. Called when a property defined in `props` is mutated.
 *   **`remove()`**: Maps to `disconnectedCallback`. Called when the element is removed. Useful for cleaning up intervals or global listeners.
 *   **`adopt()`**: Maps to `adoptedCallback`. Called when the element is moved to a new document.
 
@@ -123,6 +123,7 @@ JavaScript
 #### `def.content`
 
 A string (or a function returning a string) containing the initial HTML injected into the component before the first render.
+A `<template>` object can also be passed here, using `<slot>` mechanics to populate content from the pre-instantiated instance innerHTML
 
 *   **Use Case:** Providing structural boilerplate or loading states.
     
@@ -203,14 +204,14 @@ JavaScript
         console.log(`Property ${e.detail.name} changed from ${e.detail.was} to ${e.detail.is}`);
     });
 
-
-    
+   
 
 Global API
 ----------
 
 *   `wc.defs`: Registry of all definitions.
 *   `wc.elms`: Global registry of all active elements that have an `id` attribute.
+*   `wc.prefix`: `String` - the custom HTML tag prefix, default is `wc`.
 
 Comprehensive Example
 ---------------------
