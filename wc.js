@@ -114,28 +114,55 @@ function wc(name, def) {
 					enumerable: true
 				});
 			});
-			def.insert?.apply(this, arguments); // lifetime event
+			// if def has an insert callback then call it back
+			def.insert?.call(this, {
+				target: this,
+				type: "insert",
+				detail: def,
+			});
+			
 		}
 		
 		attributeChangedCallback(name, was, is) {
 			if (this[name] != is) this[name] = is; // update prop from attrib if needed
-			def.change?.apply(this, arguments); // if change lifetime callback in def, call it
+			
+			// if def has a change callback then call it back
+			def.change?.call(this, {
+				target: this,
+				type: "change",
+				detail: {name, was, is},
+			});
+			
 			this.raise("change", { // raise custom change event (for addEventListeners on component)
 				name,
 				was,
 				is
 			});
 		}
+		
 		disconnectedCallback(e) { // removed from dom, unmemorize and run user cleanup if provided
-			def.remove?.apply(this, arguments);
+			// if def has a remove callback then call it back
+			def.remove?.call(this, {
+				target: this,
+				type: "remove",
+				detail: def
+			});
 			if (this.id) delete wc.elms[this.id];
 		}
-		adoptedCallback(e) { // pipe this lifetime event to definition handler
-			def.adopt?.apply(this, arguments);
+		
+		adoptedCallback(e) {
+			// if def has an adopt callback then call it back
+			def.adopt?.call(this, {
+				target: this,
+				type: "adopt",
+				detail: def
+			});			
 		}
+		
 		static get observedAttributes() { // require by CustomElements
 			return PROPS;
 		}
+		
 		raise(name, details) { // custom event maker shortcut own method
 			this.dispatchEvent(new CustomEvent(name, {
 				detail: details || {}
@@ -143,7 +170,7 @@ function wc(name, def) {
 			return this;
 		}
 	} //end class wcMaker
-	customElements.define("wc-" + name, wcMaker);
+	customElements.define( wc.prefix + "-" + name, wcMaker);
 }//end wc component maker()
 
 wc._ = {
@@ -158,3 +185,4 @@ wc._ = {
 
 wc.defs={};
 wc.elms={};
+wc.prefix="wc";
