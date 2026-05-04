@@ -115,7 +115,15 @@ function wc(name, def) {
 				value: this.innerHTML
 			});
 			
-			if (def.content) this.shadowRoot.children[1].innerHTML = def.content.call ? def.content.call(this, this) : def.content;
+			if (def.content){
+				let content = def.content.call ? def.content.call(this, this) : def.content;
+				if(content.content){ // handle template object
+					this.shadowRoot.appendChild(document.importNode(content.content, true));
+				}else{
+					this.shadowRoot.children[1].innerHTML = content;
+				}
+			}
+			
 			if (def.css) this.shadowRoot.children[0].textContent = def.css.call ? def.css.call(this, this) : def.css;
 			if (this.id) wc.elms[this.id] = this; // publish to global elm list by id if any
 			if (this.render?.call) this.render(); // render initial version upon insertion
@@ -204,3 +212,4 @@ wc._ = {
 wc.defs={};
 wc.elms={};
 wc.prefix="wc";
+
