@@ -87,13 +87,13 @@ function wc(name, def) {
 				});
 			}, this);
 			
-			// bind any userland and cusotm events in def:
+			// bind any userland and custom events in def:
 			Object.keys(def.events || {}).forEach(type => {
 				this.addEventListener(type, def.events[type]);
 			}, this);
 			
 			// attach helper methods to component, eg this.$
-			Object.keys(wc._).forEach(x => Object.defineProperty(this, x, {
+			Object.keys(wc._).filter(x=>typeof wc._[x] === "function").forEach(x => Object.defineProperty(this, x, {
 				value: wc._[x].bind(this)
 			}));
 			
@@ -212,4 +212,3 @@ wc._ = {
 wc.defs={};
 wc.elms={};
 wc.prefix="wc";
-
